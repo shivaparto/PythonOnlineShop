@@ -1,18 +1,20 @@
 import sqlite3
+from Entities.order import Order
 def getAll(status):
     connection = sqlite3.connect("onlineshop.db")
     cursor = connection.cursor()
     query = "SELECT * FROM  [order] where status ='{status}'".format(status = status)
     order=[]
     for item in cursor.execute(query):
-        order.append(item)
+        orderItem = Order(item[0],item[1],item[2],item[3])
+        order.append(orderItem)
     connection.commit()
     connection.close()
     return order
-def insert(order):
+def insert(order:Order):
     connection = sqlite3.connect("onlineshop.db")
     cursor = connection.cursor()
-    query="INSERT INTO [Order](Id,article_id,number,status) VALUES(NULL,'{article_id}',{number},'{status}')".format(article_id=order["article_id"],number=order["number"],status=order["status"])
+    query="INSERT INTO [Order](Id,article_id,number,status) VALUES(NULL,'{article_id}',{number},'{status}')".format(article_id=order.article_id,number=order.number,status=order.status)
     cursor.execute(query)
     connection.commit()
     connection.close()
@@ -25,10 +27,10 @@ def delete(id):
     connection.close()
 
 
-def update(orderItem):
+def update(orderItem:Order):
     connection = sqlite3.connect("onlineshop.db")
     cursor = connection.cursor()
-    query= "UPDATE [order] SET  article_id='{article_id}',number={number},status='{status}' WHERE id='{id}'".format(id=orderItem["id"],article_id=orderItem["article_id"],number=orderItem["number"],status=orderItem["status"])
+    query= "UPDATE [order] SET  article_id='{article_id}',number={number},status='{status}' WHERE id='{id}'".format(id=orderItem.id,article_id=orderItem.article_id,number=orderItem.number,status=orderItem.status)
     cursor.execute(query)
     connection.commit()
     connection.close()
@@ -39,4 +41,4 @@ def getItemById(orderid):
     result=cursor.execute(query).fetchone()
     connection.commit()
     connection.close()
-    return result
+    return Order(result[0], result[1], result[2], result[3])
