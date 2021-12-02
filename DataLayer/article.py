@@ -47,10 +47,19 @@ def update(articleItem:Article):
     connection.close()
 
 
-def delete(artikelId):
+def delete(id):
     connection = sqlite3.connect("onlineshop.db")
     cursor = connection.cursor()
-    query = "DELETE FROM Article WHERE id='{id}'".format(id=artikelId)
+    query = "DELETE FROM Article WHERE id='{id}'".format(id=id)
     cursor.execute(query)
     connection.commit()
     connection.close()
+
+def getItemById(articleid):
+    connection = sqlite3.connect("onlineshop.db")
+    cursor = connection.cursor()
+    query= "SELECT * FROM Article where id='{id}'".format(id=articleid)
+    result = cursor.execute(query).fetchone()
+    connection.commit()
+    connection.close()
+    return Article(result[0],result[1],result[2],result[3],result[4],result[5],result[6],result[7])
