@@ -1,3 +1,4 @@
+import DataLayer.order
 from DataLayer import article
 from DataLayer import order
 from BusinessLayer import orderBusiness
@@ -17,10 +18,14 @@ def interpretCommand(command: str):
             if len(orderList)==0:
                 print("Your basket is empty!")
             for item in orderList:
-                print(item)
+                print(item.id,item.article_id,item.number,item.status)
         elif str.lower(commandArray[0]) == "buy":
-            orderBusiness.buy(commandArray)
-            print("Your buying process proceed successfully!")
+            if ValueError == "you cant":
+                print("Currently No more item in Stock")
+            elif ValueError :
+              orderBusiness.buy(commandArray)
+
+              print("Your buying process proceed successfully!")
         elif str.lower(commandArray[0]) == "delete":
             orderBusiness.delete(commandArray)
             print("Your deleting process proceed successfully!")
@@ -32,7 +37,7 @@ def interpretCommand(command: str):
 
 productList = article.getAll()
 for item in productList:
-    print(item)
+    print(item.id,item.name,item.articleNum,item.description,item.price,item.status,item.stock)
 
 print("Please select a command :")
 print("To add a product to the basket use the following command: ")
@@ -53,3 +58,5 @@ while True:
          interpretCommand(command)
         else:
             break
+
+order.getAll('False')
